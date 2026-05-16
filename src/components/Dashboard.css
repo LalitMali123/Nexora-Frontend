@@ -1,0 +1,377 @@
+:root {
+  --primary-green: #16A34A;
+  --dark-green: #15803D;
+  --light-green: #DCFCE7;
+
+  --bg-color: #F8FAFC;
+  --card-bg: #FFFFFF;
+
+  --primary-text: #0F172A;
+  --secondary-text: #64748B;
+
+  --border-color: #E2E8F0;
+
+  --income-green: #22C55E;
+  --expense-red: #EF4444;
+
+  --shadow:
+    0 10px 30px rgba(15, 23, 42, 0.05),
+    0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+/* ===== PAGE ===== */
+
+.dashboard {
+  min-height: 100vh;
+
+  background: var(--bg-color);
+
+  padding: 3rem 1.5rem;
+}
+
+/* ===== CONTAINER ===== */
+
+.container {
+  max-width: 1300px;
+  margin: auto;
+}
+
+/* ===== TITLE ===== */
+
+.dashboard-title {
+  font-size: 3rem;
+  font-weight: 800;
+
+  color: var(--primary-text);
+
+  margin-bottom: 3rem;
+
+  letter-spacing: -1px;
+}
+
+/* ===== SUMMARY CARDS ===== */
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+  gap: 1.8rem;
+
+  margin-bottom: 3rem;
+}
+
+/* ===== CARD ===== */
+
+.summary-card {
+  position: relative;
+
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  backdrop-filter: blur(16px);
+
+  border-radius: 30px;
+
+  padding: 2rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  box-shadow: var(--shadow);
+
+  transition: all 0.35s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-7px);
+
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 0.08),
+    0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+/* TOP GLOW */
+
+.summary-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 6px;
+}
+
+.summary-card.income::before {
+  background: var(--income-green);
+}
+
+.summary-card.expense::before {
+  background: var(--expense-red);
+}
+
+.summary-card.balance::before {
+  background: var(--primary-green);
+}
+
+/* ===== CARD CONTENT ===== */
+
+.card-icon {
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2rem;
+
+  border-radius: 22px;
+
+  background: var(--light-green);
+
+  margin-bottom: 1.5rem;
+}
+
+.card-content h3 {
+  color: var(--secondary-text);
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  margin-bottom: 0.8rem;
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: 800;
+
+  color: var(--primary-text);
+}
+
+.positive {
+  color: var(--income-green);
+}
+
+.negative {
+  color: var(--expense-red);
+}
+
+/* ===== DASHBOARD GRID ===== */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+
+  gap: 2rem;
+}
+
+/* ===== SECTIONS ===== */
+
+.chart-section,
+.recent-section {
+  background: rgba(255, 255, 255, 0.88);
+
+  backdrop-filter: blur(16px);
+
+  border-radius: 30px;
+
+  padding: 2rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  box-shadow: var(--shadow);
+}
+
+.chart-section h2,
+.recent-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  color: var(--primary-text);
+
+  margin-bottom: 2rem;
+}
+
+/* ===== RECENT LIST ===== */
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ===== RECENT ITEM ===== */
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  padding: 1rem;
+
+  border-radius: 18px;
+
+  transition: all 0.3s ease;
+
+  background: rgba(248, 250, 252, 0.7);
+}
+
+.recent-item:hover {
+  transform: translateX(4px);
+
+  background: var(--light-green);
+}
+
+/* ===== RECENT INFO ===== */
+
+.recent-info h4 {
+  color: var(--primary-text);
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  margin-bottom: 0.3rem;
+}
+
+.recent-info p {
+  color: var(--secondary-text);
+
+  font-size: 0.9rem;
+}
+
+/* ===== AMOUNT ===== */
+
+.recent-amount {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.recent-amount.income {
+  color: var(--income-green);
+}
+
+.recent-amount.expense {
+  color: var(--expense-red);
+}
+
+/* ===== EMPTY ===== */
+
+.no-data {
+  text-align: center;
+
+  padding: 2rem;
+
+  color: var(--secondary-text);
+
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ===== LOADING ===== */
+
+.loading-spinner {
+  text-align: center;
+
+  padding: 5rem 0;
+
+  color: var(--primary-green);
+
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* ===== ERROR ===== */
+
+.error-container {
+  text-align: center;
+
+  background: white;
+
+  padding: 3rem;
+
+  border-radius: 28px;
+
+  box-shadow: var(--shadow);
+}
+
+.error-message {
+  color: var(--expense-red);
+
+  font-size: 1.1rem;
+  font-weight: 700;
+
+  margin-bottom: 1.5rem;
+}
+
+/* ===== BUTTON ===== */
+
+.btn-primary {
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+
+  padding: 1rem 1.6rem;
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary-green),
+    var(--income-green)
+  );
+
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  transition: all 0.3s ease;
+
+  box-shadow: 0 12px 25px rgba(34, 197, 94, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 18px 35px rgba(34, 197, 94, 0.35);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 2rem 1rem;
+  }
+
+  .dashboard-title {
+    font-size: 2.3rem;
+  }
+
+  .summary-card,
+  .chart-section,
+  .recent-section {
+    padding: 1.5rem;
+    border-radius: 24px;
+  }
+
+  .amount {
+    font-size: 1.7rem;
+  }
+
+  .card-icon {
+    width: 60px;
+    height: 60px;
+  }
+}

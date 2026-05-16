@@ -1,0 +1,291 @@
+/* Navbar.css */
+
+:root {
+  --primary-green: #16A34A;
+  --dark-green: #15803D;
+  --light-green: #DCFCE7;
+
+  --bg-color: #F8FAFC;
+  --card-bg: #FFFFFF;
+
+  --primary-text: #0F172A;
+  --secondary-text: #64748B;
+
+  --border-color: #E2E8F0;
+
+  --income-green: #22C55E;
+  --expense-red: #EF4444;
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar {
+  width: 100%;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(255, 255, 255, 0.82);
+
+  backdrop-filter: blur(16px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+
+/* ===== CONTAINER ===== */
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+
+  padding: 1rem 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== LOGO ===== */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+
+  text-decoration: none;
+}
+
+.logo img {
+  width: 45px;
+  height: 45px;
+
+  object-fit: contain;
+
+  border-radius: 14px;
+}
+
+.logo-text {
+  font-size: 1.6rem;
+  font-weight: 800;
+
+  color: var(--primary-text);
+
+  letter-spacing: -0.7px;
+}
+
+/* ===== NAV LINKS ===== */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-item {
+  position: relative;
+
+  text-decoration: none;
+
+  color: var(--secondary-text);
+
+  font-size: 0.97rem;
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+  color: var(--primary-green);
+}
+
+/* UNDERLINE EFFECT */
+
+.nav-item::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -8px;
+
+  width: 0%;
+  height: 3px;
+
+  border-radius: 20px;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary-green),
+    var(--income-green)
+  );
+
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* ===== AUTH BUTTONS ===== */
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* USER NAME */
+
+.user-name {
+  padding: 0.7rem 1rem;
+
+  border-radius: 999px;
+
+  background: var(--light-green);
+
+  color: var(--primary-text);
+
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+/* ===== BUTTONS ===== */
+
+.btn-login,
+.btn-register,
+.btn-logout {
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  padding: 0.8rem 1.4rem;
+
+  border-radius: 14px;
+
+  font-size: 0.92rem;
+  font-weight: 700;
+
+  transition: all 0.3s ease;
+}
+
+/* LOGIN */
+
+.btn-login {
+  background: white;
+
+  border: 1px solid var(--border-color);
+
+  color: var(--primary-text);
+}
+
+.btn-login:hover {
+  background: var(--light-green);
+
+  border-color: var(--primary-green);
+
+  color: var(--primary-green);
+}
+
+/* REGISTER */
+
+.btn-register {
+  background: linear-gradient(
+    135deg,
+    var(--primary-green),
+    var(--income-green)
+  );
+
+  color: white;
+
+  box-shadow: 0 12px 25px rgba(34, 197, 94, 0.25);
+}
+
+.btn-register:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 18px 35px rgba(34, 197, 94, 0.35);
+}
+
+/* LOGOUT */
+
+.btn-logout {
+  background: rgba(239, 68, 68, 0.1);
+
+  color: var(--expense-red);
+}
+
+.btn-logout:hover {
+  background: var(--expense-red);
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+/* ===== MOBILE BUTTON ===== */
+
+.mobile-menu-btn {
+  display: none;
+
+  flex-direction: column;
+  gap: 5px;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.mobile-menu-btn span {
+  width: 24px;
+  height: 3px;
+
+  border-radius: 20px;
+
+  background: var(--primary-text);
+
+  transition: 0.3s ease;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 992px) {
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .nav-container {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 1.4rem;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .auth-buttons {
+    gap: 0.6rem;
+  }
+
+  .btn-login,
+  .btn-register,
+  .btn-logout {
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+  }
+}

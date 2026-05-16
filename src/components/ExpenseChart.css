@@ -1,0 +1,103 @@
+/* ExpenseChart.css */
+
+:root {
+  --primary-green: #16A34A;
+  --dark-green: #15803D;
+  --light-green: #DCFCE7;
+
+  --bg-color: #F8FAFC;
+  --card-bg: #FFFFFF;
+
+  --primary-text: #0F172A;
+  --secondary-text: #64748B;
+
+  --border-color: #E2E8F0;
+
+  --income-green: #22C55E;
+  --expense-red: #EF4444;
+
+  --shadow:
+    0 10px 30px rgba(15, 23, 42, 0.05),
+    0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+/* ===== CHART CONTAINER ===== */
+
+.expense-chart-container {
+  width: 100%;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  backdrop-filter: blur(14px);
+
+  border-radius: 30px;
+
+  padding: 2rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  box-shadow: var(--shadow);
+
+  transition: all 0.35s ease;
+}
+
+.expense-chart-container:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 20px 40px rgba(15, 23, 42, 0.08),
+    0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+/* ===== EMPTY STATE ===== */
+
+.no-chart-data {
+  background: rgba(255, 255, 255, 0.9);
+
+  backdrop-filter: blur(14px);
+
+  border-radius: 28px;
+
+  padding: 4rem 2rem;
+
+  text-align: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  box-shadow: var(--shadow);
+}
+
+.no-chart-data p {
+  color: var(--primary-text);
+
+  font-size: 1.2rem;
+  font-weight: 700;
+
+  margin-bottom: 0.5rem;
+}
+
+.sub-text {
+  color: var(--secondary-text);
+
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ===== CHART CANVAS ===== */
+
+.expense-chart-container canvas {
+  max-height: 420px !important;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .expense-chart-container {
+    padding: 1.5rem;
+    border-radius: 24px;
+  }
+
+  .no-chart-data {
+    padding: 3rem 1.5rem;
+  }
+}
