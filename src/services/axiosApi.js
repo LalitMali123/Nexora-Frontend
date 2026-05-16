@@ -1,11 +1,13 @@
 import axios from 'axios';
 
-// Use environment variable for API URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+// HARDCODED FOR PRODUCTION
+const API_URL = 'https://nexora-n5wr.onrender.com/api';
+
+console.log('?? API URL being used:', API_URL);
 
 const axiosApi = axios.create({
     baseURL: API_URL,
-    timeout: 10000,
+    timeout: 30000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -18,9 +20,22 @@ axiosApi.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+        console.log(`?? Making ${config.method.toUpperCase()} request to: ${config.url}`);
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// Response interceptor for debugging
+axiosApi.interceptors.response.use(
+    (response) => {
+        console.log(`? Response from ${response.config.url}:`, response.status);
+        return response;
+    },
+    (error) => {
+        console.error(`? Error from ${error.config?.url}:`, error.message);
         return Promise.reject(error);
     }
 );
@@ -73,6 +88,11 @@ export const api = {
     
     addBudget: async (budget) => {
         const response = await axiosApi.post('/budgets/', budget);
+        return response.data;
+    },
+    
+    deleteBudget: async (id) => {
+        const response = await axiosApi.delete(`/budgets/${id}/`);
         return response.data;
     },
 };
