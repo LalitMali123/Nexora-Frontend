@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// Use environment variable for API URL
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
 const axiosApi = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: API_URL,
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -15,7 +18,6 @@ axiosApi.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
-        console.log(`Making ${config.method.toUpperCase()} request to: ${config.url}`);
         return config;
     },
     (error) => {
@@ -23,37 +25,19 @@ axiosApi.interceptors.request.use(
     }
 );
 
-// Response interceptor
-axiosApi.interceptors.response.use(
-    (response) => {
-        console.log(`Response from ${response.config.url}:`, response.status);
-        return response;
-    },
-    (error) => {
-        if (error.response) {
-            console.error('API Error:', error.response.status, error.response.data);
-            if (error.response.status === 401) {
-                console.log('Token expired or invalid');
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('refresh_token');
-                localStorage.removeItem('user');
-                window.location.href = '/login';
-            }
-        } else if (error.request) {
-            console.error('No response received:', error.request);
-        } else {
-            console.error('Error setting up request:', error.message);
-        }
-        return Promise.reject(error);
-    }
-);
-
 export const api = {
-    getDashboard: async () => {
-        const response = await axiosApi.get('/dashboard/');
+    // Auth
+    register: async (userData) => {
+        const response = await axiosApi.post('/register/', userData);
         return response.data;
     },
     
+    login: async (credentials) => {
+        const response = await axiosApi.post('/token/', credentials);
+        return response.data;
+    },
+    
+    // Transactions
     getTransactions: async () => {
         const response = await axiosApi.get('/transactions/');
         return response.data;
@@ -69,11 +53,19 @@ export const api = {
         return response.data;
     },
     
+    // Dashboard
+    getDashboard: async () => {
+        const response = await axiosApi.get('/dashboard/');
+        return response.data;
+    },
+    
+    // Categories
     getCategories: async () => {
         const response = await axiosApi.get('/categories/');
         return response.data;
     },
     
+    // Budgets
     getBudgets: async () => {
         const response = await axiosApi.get('/budgets/');
         return response.data;
@@ -83,11 +75,6 @@ export const api = {
         const response = await axiosApi.post('/budgets/', budget);
         return response.data;
     },
-    
-    deleteBudget: async (id) => {
-        const response = await axiosApi.delete(`/budgets/${id}/`);
-        return response.data;
-    }
 };
 
 export default axiosApi;
