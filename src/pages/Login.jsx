@@ -33,12 +33,11 @@ const Login = () => {
         
         if (result.success) {
             console.log('Login successful, navigating to dashboard');
-            setLoading(false);
             navigate('/dashboard');
         } else {
             setError(result.error || 'Invalid credentials. Please try again.');
-            setLoading(false);
         }
+        setLoading(false);
     };
 
     return (
@@ -77,12 +76,12 @@ const Login = () => {
                     </div>
                     
                     <button type="submit" className="btn-submit" disabled={loading}>
-                        {loading ₹ 'Logging in...' : 'Login'}
+                        {loading ? 'Logging in...' : 'Login'}
                     </button>
                 </form>
                 
                 <p className="auth-footer">
-                    Don't have an account₹ <Link to="/register">Sign Up</Link>
+                    Don't have an account? <Link to="/register">Sign Up</Link>
                 </p>
             </div>
         </div>

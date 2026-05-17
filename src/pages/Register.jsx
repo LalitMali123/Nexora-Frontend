@@ -51,14 +51,12 @@ const Register = () => {
         setError('');
         
         try {
-            // Register using API service
             await api.register({
                 username: formData.username,
                 email: formData.email,
                 password: formData.password
             });
             
-            // Auto login after successful registration
             const result = await login(formData.username, formData.password);
             
             if (result.success) {
@@ -69,7 +67,7 @@ const Register = () => {
             }
         } catch (error) {
             console.error('Registration error:', error);
-            setError(error.response₹.data₹.detail || 'Registration failed. Please try again.');
+            setError(error.response?.data?.detail || 'Registration failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -139,12 +137,12 @@ const Register = () => {
                     </div>
                     
                     <button type="submit" className="btn-submit" disabled={loading}>
-                        {loading ₹ 'Creating Account...' : 'Sign Up'}
+                        {loading ? 'Creating Account...' : 'Sign Up'}
                     </button>
                 </form>
                 
                 <p className="auth-footer">
-                    Already have an account₹ <Link to="/login">Login</Link>
+                    Already have an account? <Link to="/login">Login</Link>
                 </p>
             </div>
         </div>

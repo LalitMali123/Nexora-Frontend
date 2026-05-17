@@ -1,16 +1,25 @@
 ﻿// utils/currency.js
-export const formatIndianCurrency = (amount) => {
-    if (amount === undefined || amount === null) {
+export const formatCurrency = (amount) => {
+    if (amount === undefined || amount === null || isNaN(amount)) {
         return '₹0.00';
     }
-    return new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }).format(amount);
+    const num = parseFloat(amount);
+    return '₹' + num.toFixed(2);
 };
 
-export const displayAmount = (amount) => {
-    return formatIndianCurrency(amount);
+export const formatIndianCurrency = (amount) => {
+    if (amount === undefined || amount === null || isNaN(amount)) {
+        return '₹0.00';
+    }
+    const num = parseFloat(amount);
+    // Format with Indian number system (lakhs, crores)
+    return '₹' + num.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 };
+
+// Simple function that just returns the rupee symbol as a string
+export const rupeeSymbol = () => '₹';
+
+export default { formatCurrency, formatIndianCurrency, rupeeSymbol };

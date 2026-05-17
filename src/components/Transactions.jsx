@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { api } from '../services/axiosApi';
+import { formatCurrency } from '../utils/currency';
 import './Transactions.css';
 
 const Transactions = () => {
@@ -9,10 +10,6 @@ const Transactions = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { token } = useContext(AuthContext);
-
-    const formatRupee = (amount) => {
-        return '₹' + parseFloat(amount || 0).toFixed(2);
-    };
 
     useEffect(() => {
         fetchTransactions();
@@ -69,7 +66,7 @@ const Transactions = () => {
                                     <div><h3>{transaction.category_name || 'Uncategorized'}</h3><p className="transaction-date">{transaction.date}</p></div>
                                 </div>
                                 <div className="transaction-amount">
-                                    <p className={`amount ${transaction.type}`}>{transaction.type === 'income' ? '+' : '-'}{formatRupee(transaction.amount)}</p>
+                                    <p className={`amount ${transaction.type}`}>{transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}</p>
                                     <button className="delete-btn" onClick={() => handleDelete(transaction.id)}>Delete</button>
                                 </div>
                             </div>
