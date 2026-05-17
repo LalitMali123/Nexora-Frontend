@@ -9,19 +9,28 @@ const Dashboard = () => {
     const [summary, setSummary] = useState({ totalIncome: 0, totalExpenses: 0, balance: 0 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { token } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
-        if (token) {
-            fetchDashboardData();
+        // Check if user is logged in
+        const token = localStorage.getItem('access_token');
+        if (!token && !user) {
+            setLoading(false);
+            setError('Please login to view dashboard');
+            return;
         }
-    }, [token]);
+        fetchDashboardData();
+    }, []);
 
     const fetchDashboardData = async () => {
         try {
             setLoading(true);
             const data = await api.getDashboard();
-            setSummary({ totalIncome: data.total_income || 0, totalExpenses: data.total_expenses || 0, balance: data.balance || 0 });
+            setSummary({ 
+                totalIncome: data.total_income || 0, 
+                totalExpenses: data.total_expenses || 0, 
+                balance: data.balance || 0 
+            });
             setTransactions(data.recent_transactions || []);
         } catch (error) {
             console.error('Error fetching dashboard:', error);

@@ -11,24 +11,29 @@ const BudgetManager = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [saving, setSaving] = useState(false);
-    const { token } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
-        if (token) {
-            fetchAllData();
+        // Check if user is logged in
+        const token = localStorage.getItem('access_token');
+        if (!token && !user) {
+            setLoading(false);
+            setError('Please login to manage budgets');
+            return;
         }
-    }, [token]);
+        fetchAllData();
+    }, []);
 
     const fetchAllData = async () => {
         try {
             setLoading(true);
-            const categoriesData = await api.getCategories();
+            const [categoriesData, budgetsData, transactionsData] = await Promise.all([
+                api.getCategories(),
+                api.getBudgets(),
+                api.getTransactions()
+            ]);
             setCategories(categoriesData.filter(cat => cat.type === 'expense'));
-            
-            const budgetsData = await api.getBudgets();
             setBudgets(budgetsData);
-            
-            const transactionsData = await api.getTransactions();
             setTransactions(transactionsData);
         } catch (error) {
             console.error('Error fetching data:', error);
