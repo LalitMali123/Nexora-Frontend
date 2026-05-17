@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { api } from '../services/axiosApi';
 
 export const AuthContext = createContext();
 
@@ -7,7 +8,6 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check if user is logged in on mount
         const storedToken = localStorage.getItem('access_token');
         const storedUser = localStorage.getItem('user');
         
@@ -19,17 +19,10 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         try {
-            const response = await fetch('http://localhost:8000/api/token/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password })
-            });
+            console.log('Logging in with:', username);
+            const data = await api.login({ username, password });
             
-            const data = await response.json();
-            
-            if (response.ok && data.access) {
+            if (data.access) {
                 localStorage.setItem('access_token', data.access);
                 localStorage.setItem('refresh_token', data.refresh);
                 const userData = { username, isAuthenticated: true };
@@ -37,11 +30,25 @@ export const AuthProvider = ({ children }) => {
                 setUser(userData);
                 return { success: true };
             } else {
-                return { success: false, error: data.detail || 'Invalid credentials' };
+                return { success: false, error: 'Invalid credentials' };
             }
         } catch (error) {
             console.error('Login error:', error);
-            return { success: false, error: 'Network error' };
+            return { success: false, error: error.message || 'Network error' };
+        }
+    };
+
+    const register = async (username, email, password) => {
+        try {
+            const data = await api.register({ username, email, password });
+            if (data.id) {
+                // Auto login after registration
+                return await login(username, password);
+            }
+            return { success: false, error: 'Registration failed' };
+        } catch (error) {
+            console.error('Registration error:', error);
+            return { success: false, error: error.message || 'Registration failed' };
         }
     };
 
@@ -53,7 +60,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     );
