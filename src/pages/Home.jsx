@@ -14,7 +14,12 @@ const Home = () => {
 
     useEffect(() => {
         const animateNumbers = () => {
-            const targets = { users: 10000, expenses: 5000000, satisfaction: 98 };
+            // Set targets to 100 users and 100 tracked expenses (in thousands)
+            const targets = { 
+                users: 100,           // 100 active users
+                expenses: 100,        // 100 tracked expenses (shown as 100+)
+                satisfaction: 98 
+            };
             const duration = 2000;
             const stepTime = 20;
             const steps = duration / stepTime;
@@ -56,10 +61,18 @@ const Home = () => {
     };
 
     const formatExpenses = (amount) => {
-        if (amount >= 1000000) {
-            return `$${(amount / 1000000).toFixed(1)}M+`;
+        // For 100 tracked expenses, show as "100+"
+        if (amount === 100) {
+            return `100+`;
         }
-        return `$${amount.toLocaleString()}+`;
+        if (amount >= 1000) {
+            return `${(amount / 1000).toFixed(1)}K+`;
+        }
+        return `${amount}+`;
+    };
+
+    const formatUsers = (amount) => {
+        return `${amount}+`;
     };
 
     return (
@@ -89,7 +102,7 @@ const Home = () => {
                 </div>
                 <div className="hero-stats">
                     <div className="stat-card">
-                        <div className="stat-number">{animatedNumbers.users.toLocaleString()}+</div>
+                        <div className="stat-number">{formatUsers(animatedNumbers.users)}</div>
                         <div className="stat-label">Active Users</div>
                     </div>
                     <div className="stat-card">
@@ -132,7 +145,7 @@ const Home = () => {
             <div className="cta-section">
                 <div className="cta-content">
                     <h2>Ready to Take Control of Your Finances?</h2>
-                    <p>Join thousands of users who are already saving money with ExpenseTracker</p>
+                    <p>Join 100+ active users who are already saving money with ExpenseTracker</p>
                     <button onClick={handleGetStarted} className="btn-cta">
                         {user ? 'Go to Dashboard' : 'Start Your Free Trial'}
                     </button>
