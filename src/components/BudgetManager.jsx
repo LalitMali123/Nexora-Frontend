@@ -13,6 +13,10 @@ const BudgetManager = () => {
     const [saving, setSaving] = useState(false);
     const { user } = useContext(AuthContext);
 
+    const formatRupee = (amount) => {
+        return '₹' + parseFloat(amount || 0).toFixed(2);
+    };
+
     useEffect(() => {
         const token = localStorage.getItem('access_token');
         if (!token && !user) {
@@ -70,7 +74,7 @@ const BudgetManager = () => {
     };
 
     const deleteBudget = async (budgetId) => {
-        if (!window.confirm('Are you sure you want to delete this budget₹')) return;
+        if (!window.confirm('Are you sure you want to delete this budget?')) return;
         try {
             await api.deleteBudget(budgetId);
             setBudgets(budgets.filter(b => b.id !== budgetId));
@@ -90,12 +94,12 @@ const BudgetManager = () => {
 
     const getCategoryName = (categoryId) => {
         const category = categories.find(c => c.id === categoryId);
-        return category ₹ category.name : 'Unknown';
+        return category ? category.name : 'Unknown';
     };
 
     const getCategoryIcon = (categoryId) => {
         const category = categories.find(c => c.id === categoryId);
-        return category ₹ category.icon : '💰';
+        return category ? category.icon : '💰';
     };
 
     const getProgressColor = (spent, budget) => {
@@ -120,12 +124,12 @@ const BudgetManager = () => {
                             {categories.map(category => (<option key={category.id} value={category.id}>{category.icon} {category.name}</option>))}
                         </select>
                         <input type="number" placeholder="Budget Amount" value={newBudget.amount} onChange={(e) => setNewBudget({ ...newBudget, amount: e.target.value })} />
-                        <button onClick={saveBudget} className="btn-primary" disabled={saving}>{saving ₹ 'Saving...' : 'Set Budget'}</button>
+                        <button onClick={saveBudget} className="btn-primary" disabled={saving}>{saving ? 'Saving...' : 'Set Budget'}</button>
                     </div>
                 </div>
                 <div className="budgets-list">
                     <h2>Your Budgets</h2>
-                    {budgets.length === 0 ₹ (<div className="no-budgets"><p>No budgets set yet</p><p className="sub-text">Set a budget to start tracking your spending</p></div>) : (
+                    {budgets.length === 0 ? (<div className="no-budgets"><p>No budgets set yet</p><p className="sub-text">Set a budget to start tracking your spending</p></div>) : (
                         budgets.map(budget => {
                             const spent = getCategorySpending(budget.category);
                             const percentage = (spent / budget.amount) * 100;
@@ -135,9 +139,9 @@ const BudgetManager = () => {
                                 <div key={budget.id} className="budget-card">
                                     <div className="budget-header"><h3>{getCategoryIcon(budget.category)} {getCategoryName(budget.category)}</h3><button onClick={() => deleteBudget(budget.id)} className="delete-budget-btn">Delete</button></div>
                                     <div className="budget-stats">
-                                        <div className="budget-amounts"><span>Budget: &#8377;{parseFloat(budget.amount).toFixed(2)}</span><span>Spent: &#8377;{spent.toFixed(2)}</span><span>Remaining: &#8377;{Math.max(0, remaining).toFixed(2)}</span></div>
+                                        <div className="budget-amounts"><span>Budget: {formatRupee(budget.amount)}</span><span>Spent: {formatRupee(spent)}</span><span>Remaining: {formatRupee(Math.max(0, remaining))}</span></div>
                                         <div className="progress-bar-container"><div className={`progress-bar ${color}`} style={{ width: `${Math.min(percentage, 100)}%` }}></div></div>
-                                        <p className={`budget-status ${color}`}>{percentage >= 100 ₹ '⚠️ Budget Exceeded!' : percentage >= 80 ₹ '⚠️ Approaching Limit' : '✅ On Track'}</p>
+                                        <p className={`budget-status ${color}`}>{percentage >= 100 ? '⚠️ Budget Exceeded!' : percentage >= 80 ? '⚠️ Approaching Limit' : '✅ On Track'}</p>
                                     </div>
                                 </div>
                             );

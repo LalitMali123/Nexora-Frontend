@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
 
         <div className="auth-buttons">
-          {user ₹ (
+          {user ? (
             <>
               <span className="user-name">Hi, {user.username}</span>
               <button onClick={handleLogout} className="btn-logout">Logout</button>

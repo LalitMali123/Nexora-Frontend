@@ -54,6 +54,10 @@ const AddExpense = () => {
         setFormData(prev => ({ ...prev, type: type, category: '' }));
     };
 
+    const formatRupee = (amount) => {
+        return '₹' + parseFloat(amount || 0).toFixed(2);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -80,7 +84,7 @@ const AddExpense = () => {
             navigate('/transactions');
         } catch (error) {
             console.error('Error adding transaction:', error);
-            if (error.response₹.status === 401) {
+            if (error.response?.status === 401) {
                 alert('Session expired. Please login again.');
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
@@ -119,15 +123,15 @@ const AddExpense = () => {
                             <div className="form-group">
                                 <label>Transaction Type</label>
                                 <div className="type-buttons">
-                                    <button type="button" className={`type-btn ${formData.type === 'expense' ₹ 'active expense' : ''}`} onClick={() => handleTypeChange('expense')}>₹₹ Expense</button>
-                                    <button type="button" className={`type-btn ${formData.type === 'income' ₹ 'active income' : ''}`} onClick={() => handleTypeChange('income')}>₹₹ Income</button>
+                                    <button type="button" className={`type-btn ${formData.type === 'expense' ? 'active expense' : ''}`} onClick={() => handleTypeChange('expense')}>💸 Expense</button>
+                                    <button type="button" className={`type-btn ${formData.type === 'income' ? 'active income' : ''}`} onClick={() => handleTypeChange('income')}>💰 Income</button>
                                 </div>
                             </div>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group">
-                                <label htmlFor="amount">Amount (₹)</label>
+                                <label htmlFor="amount">Amount ({formatRupee(0).charAt(0)})</label>
                                 <input type="number" id="amount" name="amount" value={formData.amount} onChange={handleChange} required min="0.01" step="0.01" placeholder="0.00" />
                             </div>
 
@@ -154,7 +158,7 @@ const AddExpense = () => {
 
                         <div className="form-actions">
                             <button type="button" className="btn-cancel" onClick={() => navigate('/dashboard')}>Cancel</button>
-                            <button type="submit" className="btn-submit" disabled={loading}>{loading ₹ 'Adding...' : 'Add Transaction'}</button>
+                            <button type="submit" className="btn-submit" disabled={loading}>{loading ? 'Adding...' : 'Add Transaction'}</button>
                         </div>
                     </form>
                 </div>

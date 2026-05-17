@@ -11,6 +11,10 @@ const Dashboard = () => {
     const [error, setError] = useState(null);
     const { user } = useContext(AuthContext);
 
+    const formatRupee = (amount) => {
+        return '₹' + parseFloat(amount || 0).toFixed(2);
+    };
+
     useEffect(() => {
         const token = localStorage.getItem('access_token');
         if (!token && !user) {
@@ -47,13 +51,13 @@ const Dashboard = () => {
             <div className="container">
                 <h1 className="dashboard-title">Dashboard</h1>
                 <div className="summary-cards">
-                    <div className="summary-card income"><div className="card-icon">💰</div><div className="card-content"><h3>Total Income</h3><p className="amount">&#8377;{parseFloat(summary.totalIncome).toFixed(2)}</p></div></div>
-                    <div className="summary-card expense"><div className="card-icon">💸</div><div className="card-content"><h3>Total Expenses</h3><p className="amount">&#8377;{parseFloat(summary.totalExpenses).toFixed(2)}</p></div></div>
-                    <div className="summary-card balance"><div className="card-icon">📊</div><div className="card-content"><h3>Balance</h3><p className={`amount ${summary.balance >= 0 ₹ 'positive' : 'negative'}`}>&#8377;{parseFloat(summary.balance).toFixed(2)}</p></div></div>
+                    <div className="summary-card income"><div className="card-icon">💰</div><div className="card-content"><h3>Total Income</h3><p className="amount">{formatRupee(summary.totalIncome)}</p></div></div>
+                    <div className="summary-card expense"><div className="card-icon">💸</div><div className="card-content"><h3>Total Expenses</h3><p className="amount">{formatRupee(summary.totalExpenses)}</p></div></div>
+                    <div className="summary-card balance"><div className="card-icon">📊</div><div className="card-content"><h3>Balance</h3><p className={`amount ${summary.balance >= 0 ? 'positive' : 'negative'}`}>{formatRupee(summary.balance)}</p></div></div>
                 </div>
                 <div className="dashboard-grid">
                     <div className="chart-section"><h2>Expense Breakdown</h2><ExpenseChart transactions={transactions} /></div>
-                    <div className="recent-section"><h2>Recent Transactions</h2><div className="recent-list">{transactions₹.length > 0 ₹ transactions.map(t => (<div key={t.id} className="recent-item"><div className="recent-info"><h4>{t.category_name || t.category}</h4><p>{t.date}</p></div><p className={`recent-amount ${t.type}`}>{t.type === 'income' ₹ '+' : '-'}&#8377;{parseFloat(t.amount).toFixed(2)}</p></div>)) : <p className="no-data">No transactions yet.</p>}</div></div>
+                    <div className="recent-section"><h2>Recent Transactions</h2><div className="recent-list">{transactions?.length > 0 ? transactions.map(t => (<div key={t.id} className="recent-item"><div className="recent-info"><h4>{t.category_name || t.category}</h4><p>{t.date}</p></div><p className={`recent-amount ${t.type}`}>{t.type === 'income' ? '+' : '-'}{formatRupee(t.amount)}</p></div>)) : <p className="no-data">No transactions yet.</p>}</div></div>
                 </div>
             </div>
         </div>
