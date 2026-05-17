@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+﻿import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Navbar.css';
@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
 
         <div className="auth-buttons">
-          {user ? (
+          {user ₹ (
             <>
               <span className="user-name">Hi, {user.username}</span>
               <button onClick={handleLogout} className="btn-logout">Logout</button>

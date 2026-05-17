@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+﻿import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css';
@@ -77,12 +77,12 @@ const Login = () => {
                     </div>
                     
                     <button type="submit" className="btn-submit" disabled={loading}>
-                        {loading ? 'Logging in...' : 'Login'}
+                        {loading ₹ 'Logging in...' : 'Login'}
                     </button>
                 </form>
                 
                 <p className="auth-footer">
-                    Don't have an account? <Link to="/register">Sign Up</Link>
+                    Don't have an account₹ <Link to="/register">Sign Up</Link>
                 </p>
             </div>
         </div>

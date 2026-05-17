@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+﻿import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { api } from '../services/axiosApi';
@@ -69,7 +69,7 @@ const Register = () => {
             }
         } catch (error) {
             console.error('Registration error:', error);
-            setError(error.response?.data?.detail || 'Registration failed. Please try again.');
+            setError(error.response₹.data₹.detail || 'Registration failed. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -139,12 +139,12 @@ const Register = () => {
                     </div>
                     
                     <button type="submit" className="btn-submit" disabled={loading}>
-                        {loading ? 'Creating Account...' : 'Sign Up'}
+                        {loading ₹ 'Creating Account...' : 'Sign Up'}
                     </button>
                 </form>
                 
                 <p className="auth-footer">
-                    Already have an account? <Link to="/login">Login</Link>
+                    Already have an account₹ <Link to="/login">Login</Link>
                 </p>
             </div>
         </div>

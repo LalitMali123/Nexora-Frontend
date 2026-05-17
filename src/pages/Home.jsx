@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+﻿import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Home.css';
@@ -80,8 +80,8 @@ const Home = () => {
                     </p>
                     <div className="hero-buttons">
                         <button onClick={handleGetStarted} className="btn-get-started">
-                            {user ? 'Go to Dashboard' : 'Get Started Free'}
-                            <span className="btn-arrow">→</span>
+                            {user ₹ 'Go to Dashboard' : 'Get Started Free'}
+                            <span className="btn-arrow">â†’</span>
                         </button>
                         {!user && (
                             <Link to="/login" className="btn-learn-more">Learn More</Link>
@@ -108,25 +108,25 @@ const Home = () => {
             </div>
 
             <div className="features-section">
-                <h2 className="section-title">Why Choose Us?</h2>
+                <h2 className="section-title">Why Choose Us₹</h2>
                 <div className="features-grid">
                     <div className="feature-card">
-                        <div className="feature-icon">📊</div>
+                        <div className="feature-icon">ðŸ“Š</div>
                         <h3>Real-time Analytics</h3>
                         <p>Track your spending patterns with beautiful charts and insights</p>
                     </div>
                     <div className="feature-card">
-                        <div className="feature-icon">💰</div>
+                        <div className="feature-icon">ðŸ’°</div>
                         <h3>Budget Management</h3>
                         <p>Set monthly budgets and get alerts when you're close to limits</p>
                     </div>
                     <div className="feature-card">
-                        <div className="feature-icon">🔒</div>
+                        <div className="feature-icon">ðŸ”’</div>
                         <h3>Secure & Private</h3>
                         <p>Your financial data is encrypted and completely private</p>
                     </div>
                     <div className="feature-card">
-                        <div className="feature-icon">📱</div>
+                        <div className="feature-icon">ðŸ“±</div>
                         <h3>Mobile Friendly</h3>
                         <p>Access your expenses anytime, anywhere on any device</p>
                     </div>
@@ -136,10 +136,10 @@ const Home = () => {
             {/* Call to Action Section */}
             <div className="cta-section">
                 <div className="cta-content">
-                    <h2>Ready to Take Control of Your Finances?</h2>
+                    <h2>Ready to Take Control of Your Finances₹</h2>
                     <p>Join thousands of users who are already saving money with ExpenseTracker</p>
                     <button onClick={handleGetStarted} className="btn-cta">
-                        {user ? 'Go to Dashboard' : 'Start Your Free Trial'}
+                        {user ₹ 'Go to Dashboard' : 'Start Your Free Trial'}
                     </button>
                 </div>
             </div>

@@ -64,9 +64,9 @@ const Reports = () => {
             if (t.type === 'expense') {
                 const categoryId = t.category;
                 const category = categories.find(c => c.id === categoryId);
-                const categoryName = category ? category.name : 'Unknown';
+                const categoryName = category ₹ category.name : 'Unknown';
                 if (!categoryData[categoryName]) {
-                    categoryData[categoryName] = { amount: 0, count: 0, icon: category ? category.icon : '💰' };
+                    categoryData[categoryName] = { amount: 0, count: 0, icon: category ₹ category.icon : '💰' };
                 }
                 categoryData[categoryName].amount += parseFloat(t.amount);
                 categoryData[categoryName].count++;
@@ -115,7 +115,7 @@ const Reports = () => {
     };
 
     const downloadJSON = () => {
-        const report = { generatedAt: new Date().toISOString(), reportType: reportType, summary: { totalIncome: totalIncome, totalExpenses: totalExpenses, netSavings: totalIncome - totalExpenses, totalTransactions: transactions.length }, data: reportType === 'monthly' ? getMonthlyReport() : getCategoryReport() };
+        const report = { generatedAt: new Date().toISOString(), reportType: reportType, summary: { totalIncome: totalIncome, totalExpenses: totalExpenses, netSavings: totalIncome - totalExpenses, totalTransactions: transactions.length }, data: reportType === 'monthly' ₹ getMonthlyReport() : getCategoryReport() };
         const dataStr = JSON.stringify(report, null, 2);
         const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
         const linkElement = document.createElement('a');
@@ -158,13 +158,13 @@ const Reports = () => {
                 <div className="summary-stats">
                     <div className="stat-box"><h3>Total Income</h3><p className="income-text">&#8377;{totalIncome.toFixed(2)}</p></div>
                     <div className="stat-box"><h3>Total Expenses</h3><p className="expense-text">&#8377;{totalExpenses.toFixed(2)}</p></div>
-                    <div className="stat-box"><h3>Net Savings</h3><p className={totalIncome - totalExpenses >= 0 ? 'income-text' : 'expense-text'}>&#8377;{(totalIncome - totalExpenses).toFixed(2)}</p></div>
+                    <div className="stat-box"><h3>Net Savings</h3><p className={totalIncome - totalExpenses >= 0 ₹ 'income-text' : 'expense-text'}>&#8377;{(totalIncome - totalExpenses).toFixed(2)}</p></div>
                     <div className="stat-box"><h3>Transactions</h3><p>{transactions.length}</p></div>
                 </div>
                 <div className="report-controls">
                     <div className="report-type-selector">
-                        <button className={`report-btn ${reportType === 'monthly' ? 'active' : ''}`} onClick={() => setReportType('monthly')}>Monthly Report</button>
-                        <button className={`report-btn ${reportType === 'category' ? 'active' : ''}`} onClick={() => setReportType('category')}>Category Report</button>
+                        <button className={`report-btn ${reportType === 'monthly' ₹ 'active' : ''}`} onClick={() => setReportType('monthly')}>Monthly Report</button>
+                        <button className={`report-btn ${reportType === 'category' ₹ 'active' : ''}`} onClick={() => setReportType('category')}>Category Report</button>
                     </div>
                     <div className="download-buttons">
                         <button onClick={downloadPDF} className="btn-pdf">📄 Download PDF</button>
@@ -172,8 +172,8 @@ const Reports = () => {
                         <button onClick={downloadCSV} className="btn-csv">📊 Download CSV</button>
                     </div>
                 </div>
-                {reportType === 'monthly' && (<div className="report-card"><h2>Monthly Summary</h2>{monthlyReport.length === 0 ? (<div className="no-data">No transactions found</div>) : (<div className="report-table"><table><thead><tr><th>Month</th><th>Income</th><th>Expenses</th><th>Savings</th><th>Transactions</th></tr></thead><tbody>{monthlyReport.map(([month, data]) => (<tr key={month}><td>{month}</td><td className="income">&#8377;{data.income.toFixed(2)}</td><td className="expense">&#8377;{data.expense.toFixed(2)}</td><td className={data.savings >= 0 ? 'income' : 'expense'}>&#8377;{data.savings.toFixed(2)}</td><td>{data.count}</td></tr>))}</tbody></table></div>)}</div>)}
-                {reportType === 'category' && (<div className="report-card"><h2>Category Breakdown</h2>{categoryReport.length === 0 ? (<div className="no-data">No expense transactions found</div>) : (<div className="report-table"><table><thead><tr><th>Category</th><th>Total Spent</th><th>Transactions</th><th>Average</th><th>Percentage</th></tr></thead><tbody>{categoryReport.map(([category, data]) => (<tr key={category}><td><span className="category-icon">{data.icon}</span> {category}</td><td className="expense">&#8377;{data.amount.toFixed(2)}</td><td>{data.count}</td><td>&#8377;{(data.amount / data.count).toFixed(2)}</td><td>{totalExpenses > 0 ? ((data.amount / totalExpenses) * 100).toFixed(1) : 0}%</td></tr>))}</tbody></table></div>)}</div>)}
+                {reportType === 'monthly' && (<div className="report-card"><h2>Monthly Summary</h2>{monthlyReport.length === 0 ₹ (<div className="no-data">No transactions found</div>) : (<div className="report-table"><table><thead><tr><th>Month</th><th>Income</th><th>Expenses</th><th>Savings</th><th>Transactions</th></tr></thead><tbody>{monthlyReport.map(([month, data]) => (<tr key={month}><td>{month}</td><td className="income">&#8377;{data.income.toFixed(2)}</td><td className="expense">&#8377;{data.expense.toFixed(2)}</td><td className={data.savings >= 0 ₹ 'income' : 'expense'}>&#8377;{data.savings.toFixed(2)}</td><td>{data.count}</td></tr>))}</tbody></table></div>)}</div>)}
+                {reportType === 'category' && (<div className="report-card"><h2>Category Breakdown</h2>{categoryReport.length === 0 ₹ (<div className="no-data">No expense transactions found</div>) : (<div className="report-table"><table><thead><tr><th>Category</th><th>Total Spent</th><th>Transactions</th><th>Average</th><th>Percentage</th></tr></thead><tbody>{categoryReport.map(([category, data]) => (<tr key={category}><td><span className="category-icon">{data.icon}</span> {category}</td><td className="expense">&#8377;{data.amount.toFixed(2)}</td><td>{data.count}</td><td>&#8377;{(data.amount / data.count).toFixed(2)}</td><td>{totalExpenses > 0 ₹ ((data.amount / totalExpenses) * 100).toFixed(1) : 0}%</td></tr>))}</tbody></table></div>)}</div>)}
             </div>
         </div>
     );
