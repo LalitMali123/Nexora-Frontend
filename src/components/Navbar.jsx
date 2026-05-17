@@ -26,7 +26,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <Link to="/" className="logo" onClick={closeMenu}>
-          <div className="logo-icon">💰</div>
+          <img src="/Nexoralogo.png" alt="Nexora Logo" className="logo-image" />
           <span className="logo-text">Nexora</span>
         </Link>
 

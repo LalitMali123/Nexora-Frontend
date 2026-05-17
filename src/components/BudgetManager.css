@@ -1,428 +1,464 @@
-:root {
-  --primary-green: #16A34A;
-  --dark-green: #15803D;
-  --light-green: #DCFCE7;
+/* ============================================
+   BUDGET MANAGER — Glass UI
+   Matches Dashboard & Transactions theme
+   ============================================ */
 
-  --bg-color: #F8FAFC;
-  --card-bg: #FFFFFF;
-
-  --primary-text: #0F172A;
-  --secondary-text: #64748B;
-
-  --border-color: #E2E8F0;
-
-  --income-green: #22C55E;
-  --expense-red: #EF4444;
-  --warning-amber: #F59E0B;
-
-  --shadow:
-    0 10px 30px rgba(15, 23, 42, 0.05),
-    0 4px 12px rgba(15, 23, 42, 0.03);
-}
-
-/* ===== PAGE ===== */
-
+/* ---- Page Wrapper ---- */
 .budget-manager {
   min-height: 100vh;
-
-  background: var(--bg-color);
-
-  padding: 3rem 1.5rem;
+  padding-top: calc(var(--nav-height, 70px) + 40px);
+  padding-bottom: 60px;
 }
-
-/* ===== CONTAINER ===== */
 
 .container {
-  max-width: 1300px;
-  margin: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-/* ===== TITLE ===== */
-
+/* ---- Page Title ---- */
 .page-title {
-  font-size: 3rem;
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 36px;
 
-  color: var(--primary-text);
-
-  margin-bottom: 3rem;
-
-  letter-spacing: -1px;
+  background: linear-gradient(120deg, #fff 0%, rgba(0, 229, 255, 0.9) 60%, var(--accent-violet, #b388ff) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* ===== ADD SECTION ===== */
-
-.add-budget-section {
-  background: rgba(255, 255, 255, 0.88);
-
-  backdrop-filter: blur(16px);
-
-  border-radius: 30px;
-
-  padding: 2rem;
-
-  margin-bottom: 3rem;
-
-  border: 1px solid rgba(255, 255, 255, 0.5);
-
-  box-shadow: var(--shadow);
-}
-
-.add-budget-section h2 {
-  font-size: 1.6rem;
+/* ---- Section Headings ---- */
+.add-budget-section h2,
+.budgets-list h2 {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 1.05rem;
   font-weight: 700;
-
-  color: var(--primary-text);
-
-  margin-bottom: 1.8rem;
+  letter-spacing: -0.01em;
+  color: var(--text-primary, rgba(255, 255, 255, 0.95));
+  margin: 0 0 20px;
 }
 
-/* ===== FORM ===== */
+/* ---- Add Budget Section (glass panel) ---- */
+.add-budget-section {
+  position: relative;
+  padding: 28px;
+  margin-bottom: 28px;
+  border-radius: var(--radius-lg, 24px);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: var(--blur, blur(18px));
+  -webkit-backdrop-filter: var(--blur, blur(18px));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.28)),
+              inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  animation: fadeInUp 0.4s ease both;
+}
 
+/* Shimmer line at top */
+.add-budget-section::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12) 30%,
+    rgba(255, 255, 255, 0.12) 70%,
+    transparent
+  );
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ---- Add Budget Form Row ---- */
 .add-budget-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-
-  gap: 1rem;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
+/* Select & Input — same glass field style as AddExpense */
 .add-budget-form select,
-.add-budget-form input {
-  width: 100%;
+.add-budget-form input[type="number"] {
+  flex: 1;
+  min-width: 160px;
+  padding: 13px 16px;
+  font-size: 0.92rem;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  color: var(--text-primary, rgba(255, 255, 255, 0.95));
 
-  padding: 1rem 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: var(--radius-md, 16px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  border-radius: 16px;
-
-  border: 1px solid var(--border-color);
-
-  background: white;
-
-  color: var(--primary-text);
-
-  font-size: 1rem;
-
-  transition: all 0.3s ease;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .add-budget-form select:focus,
-.add-budget-form input:focus {
-  outline: none;
-
-  border-color: var(--primary-green);
-
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+.add-budget-form input[type="number"]:focus {
+  border-color: rgba(0, 229, 255, 0.45);
+  background: rgba(0, 229, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* ===== BUTTON ===== */
+.add-budget-form input[type="number"]::placeholder {
+  color: var(--text-muted, rgba(255, 255, 255, 0.3));
+}
 
-.btn-primary {
-  border: none;
-  outline: none;
-
+/* Select arrow */
+.add-budget-form select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.35)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
   cursor: pointer;
-
-  padding: 1rem 1.5rem;
-
-  border-radius: 16px;
-
-  background: linear-gradient(
-    135deg,
-    var(--primary-green),
-    var(--income-green)
-  );
-
-  color: white;
-
-  font-size: 1rem;
-  font-weight: 700;
-
-  transition: all 0.3s ease;
-
-  box-shadow: 0 12px 25px rgba(34, 197, 94, 0.25);
 }
 
-.btn-primary:hover {
-  transform: translateY(-3px);
+.add-budget-form select option {
+  background: #0f0d2a;
+  color: rgba(255, 255, 255, 0.9);
+}
 
-  box-shadow: 0 18px 35px rgba(34, 197, 94, 0.35);
+/* Primary Button — cyan→violet gradient, same across all pages */
+.btn-primary {
+  padding: 13px 28px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  letter-spacing: 0.02em;
+  color: #07051a;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  border: none;
+  border-radius: var(--radius-pill, 999px);
+  background: linear-gradient(120deg, var(--accent-cyan, #00e5ff), var(--accent-violet, #b388ff));
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+
+  transition: box-shadow 0.25s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 8px 32px rgba(0, 229, 255, 0.5);
+  transform: translateY(-2px);
 }
 
 .btn-primary:disabled {
-  opacity: 0.7;
+  opacity: 0.55;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* ===== BUDGET LIST ===== */
-
-.budgets-list h2 {
-  font-size: 2rem;
-  font-weight: 700;
-
-  color: var(--primary-text);
-
-  margin-bottom: 2rem;
+/* ---- Budgets List Section ---- */
+.budgets-list {
+  position: relative;
+  padding: 28px;
+  border-radius: var(--radius-lg, 24px);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: var(--blur, blur(18px));
+  -webkit-backdrop-filter: var(--blur, blur(18px));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.28)),
+              inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  animation: fadeInUp 0.4s 0.08s ease both;
 }
 
-/* ===== BUDGET CARD ===== */
+.budgets-list::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12) 30%,
+    rgba(255, 255, 255, 0.12) 70%,
+    transparent
+  );
+}
 
+/* ---- Empty State ---- */
+.no-budgets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 16px);
+}
+
+.no-budgets p {
+  margin: 0;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 1rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.38));
+}
+
+.no-budgets .sub-text {
+  font-size: 0.82rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.28));
+}
+
+/* ---- Budget Cards ---- */
 .budget-card {
-  background: rgba(255, 255, 255, 0.88);
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-md, 16px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  backdrop-filter: blur(16px);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  animation: slideUp 0.35s ease both;
+}
 
-  border-radius: 28px;
+.budget-card:last-child {
+  margin-bottom: 0;
+}
 
-  padding: 2rem;
+.budget-card:nth-child(1) { animation-delay: 0.05s; }
+.budget-card:nth-child(2) { animation-delay: 0.10s; }
+.budget-card:nth-child(3) { animation-delay: 0.15s; }
+.budget-card:nth-child(4) { animation-delay: 0.20s; }
+.budget-card:nth-child(n+5) { animation-delay: 0.25s; }
 
-  margin-bottom: 1.5rem;
-
-  border: 1px solid rgba(255, 255, 255, 0.5);
-
-  box-shadow: var(--shadow);
-
-  transition: all 0.35s ease;
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
 .budget-card:hover {
-  transform: translateY(-5px);
-
-  box-shadow:
-    0 20px 40px rgba(15, 23, 42, 0.08),
-    0 6px 18px rgba(15, 23, 42, 0.04);
+  transform: translateY(-2px);
+  border-color: var(--glass-border-strong, rgba(255, 255, 255, 0.2));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* ===== HEADER ===== */
-
+/* ---- Budget Header ---- */
 .budget-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  gap: 1rem;
-
-  margin-bottom: 1.5rem;
+  margin-bottom: 16px;
 }
 
 .budget-header h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-
-  color: var(--primary-text);
+  margin: 0;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary, rgba(255, 255, 255, 0.95));
 }
 
-/* ===== DELETE BUTTON ===== */
-
+/* Delete button — same ghost-red style as Transactions */
 .delete-budget-btn {
-  border: none;
-  outline: none;
-
+  padding: 5px 14px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 107, 107, 0.75);
+  background: rgba(255, 60, 60, 0.07);
+  border: 1px solid rgba(255, 100, 100, 0.18);
+  border-radius: var(--radius-pill, 999px);
   cursor: pointer;
-
-  padding: 0.8rem 1rem;
-
-  border-radius: 14px;
-
-  background: rgba(239, 68, 68, 0.1);
-
-  color: var(--expense-red);
-
-  font-size: 0.9rem;
-  font-weight: 700;
-
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .delete-budget-btn:hover {
-  background: var(--expense-red);
-
-  color: white;
-
-  transform: translateY(-2px);
+  color: #ff6b6b;
+  background: rgba(255, 60, 60, 0.16);
+  border-color: rgba(255, 100, 100, 0.35);
+  box-shadow: 0 4px 14px rgba(255, 60, 60, 0.2);
 }
 
-/* ===== STATS ===== */
+/* ---- Budget Stats ---- */
+.budget-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .budget-amounts {
   display: flex;
-  justify-content: space-between;
-
-  gap: 1rem;
-
+  gap: 20px;
   flex-wrap: wrap;
-
-  margin-bottom: 1.3rem;
 }
 
 .budget-amounts span {
-  color: var(--secondary-text);
-
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
 }
 
-/* ===== PROGRESS ===== */
-
+/* ---- Progress Bar ---- */
 .progress-bar-container {
   width: 100%;
-  height: 14px;
-
+  height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-pill, 999px);
   overflow: hidden;
-
-  background: #E5E7EB;
-
-  border-radius: 999px;
-
-  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .progress-bar {
   height: 100%;
-
-  border-radius: 999px;
-
-  transition: width 0.5s ease;
+  border-radius: var(--radius-pill, 999px);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
-/* COLORS */
+/* Animated shimmer on bar */
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
 
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+/* Success — green */
 .progress-bar.success {
-  background: linear-gradient(
-    135deg,
-    var(--income-green),
-    var(--primary-green)
-  );
+  background: linear-gradient(90deg, var(--accent-green, #4ade80), rgba(74, 222, 128, 0.6));
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
 }
 
+/* Warning — amber */
 .progress-bar.warning {
-  background: linear-gradient(
-    135deg,
-    #FBBF24,
-    var(--warning-amber)
-  );
+  background: linear-gradient(90deg, #fbbf24, rgba(251, 191, 36, 0.6));
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
 }
 
+/* Danger — pink/red */
 .progress-bar.danger {
-  background: linear-gradient(
-    135deg,
-    #F87171,
-    var(--expense-red)
-  );
+  background: linear-gradient(90deg, var(--accent-pink, #f472b6), rgba(244, 114, 182, 0.6));
+  box-shadow: 0 0 10px rgba(244, 114, 182, 0.3);
 }
 
-/* ===== STATUS ===== */
-
+/* ---- Budget Status Text ---- */
 .budget-status {
-  font-size: 0.95rem;
-  font-weight: 700;
+  margin: 0;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-.budget-status.success {
-  color: var(--income-green);
-}
+.budget-status.success { color: var(--accent-green, #4ade80); }
+.budget-status.warning { color: #fbbf24; }
+.budget-status.danger  { color: var(--accent-pink, #f472b6); }
 
-.budget-status.warning {
-  color: var(--warning-amber);
-}
-
-.budget-status.danger {
-  color: var(--expense-red);
-}
-
-/* ===== EMPTY ===== */
-
-.no-budgets {
-  background: rgba(255, 255, 255, 0.88);
-
-  backdrop-filter: blur(16px);
-
-  border-radius: 28px;
-
-  padding: 4rem 2rem;
-
-  text-align: center;
-
-  box-shadow: var(--shadow);
-}
-
-.no-budgets p {
-  color: var(--primary-text);
-
-  font-size: 1.2rem;
-  font-weight: 700;
-
-  margin-bottom: 0.5rem;
-}
-
-.sub-text {
-  color: var(--secondary-text);
-
-  font-size: 0.95rem;
-}
-
-/* ===== LOADING ===== */
-
+/* ---- Loading & Error — same as Dashboard ---- */
 .loading-spinner {
-  text-align: center;
-
-  padding: 5rem 0;
-
-  color: var(--primary-green);
-
-  font-size: 1.2rem;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 1rem;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.6));
+  animation: pulse 1.8s ease-in-out infinite;
 }
 
-/* ===== ERROR ===== */
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1;   }
+}
 
 .error-container {
-  text-align: center;
-
-  background: white;
-
-  padding: 3rem;
-
-  border-radius: 28px;
-
-  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 100vh;
+  padding: 24px;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
 }
 
 .error-message {
-  color: var(--expense-red);
-
-  font-size: 1.1rem;
-  font-weight: 700;
-
-  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: rgba(255, 100, 100, 0.85);
+  padding: 16px 24px;
+  background: rgba(255, 60, 60, 0.08);
+  border: 1px solid rgba(255, 100, 100, 0.2);
+  border-radius: var(--radius-md, 16px);
+  backdrop-filter: var(--blur-light, blur(10px));
+  -webkit-backdrop-filter: var(--blur-light, blur(10px));
+  margin: 0;
 }
 
-/* ===== RESPONSIVE ===== */
-
-@media (max-width: 768px) {
-  .budget-manager {
-    padding: 2rem 1rem;
-  }
-
-  .page-title {
-    font-size: 2.3rem;
-  }
-
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
   .add-budget-form {
-    grid-template-columns: 1fr;
-  }
-
-  .budget-card,
-  .add-budget-section {
-    padding: 1.5rem;
-    border-radius: 24px;
-  }
-
-  .budget-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .add-budget-form select,
+  .add-budget-form input[type="number"],
+  .btn-primary {
+    width: 100%;
+    min-width: unset;
   }
 
   .budget-amounts {
     flex-direction: column;
+    gap: 4px;
+  }
+
+  .add-budget-section,
+  .budgets-list {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .page-title {
+    font-size: 1.7rem;
+  }
+
+  .budget-header {
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }

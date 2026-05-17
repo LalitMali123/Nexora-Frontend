@@ -138,8 +138,6 @@ const Home = () => {
                     </button>
                 </div>
             </div>
-            <h1 className='designer'>Designed By: Lalit Saini</h1>
-            <div className='designer'>Ex Google CEO</div>
         </div>
     );
 };
