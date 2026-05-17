@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+﻿import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { api } from '../services/axiosApi';
 import './Transactions.css';
@@ -28,7 +28,7 @@ const Transactions = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this transaction?')) {
+        if (window.confirm('Are you sure you want to delete this transaction₹')) {
             try {
                 await api.deleteTransaction(id);
                 await fetchTransactions();
@@ -40,7 +40,7 @@ const Transactions = () => {
         }
     };
 
-    const filteredTransactions = transactions.filter(t => filter === 'all' ? true : t.type === filter);
+    const filteredTransactions = transactions.filter(t => filter === 'all' ₹ true : t.type === filter);
 
     if (loading) return <div className="loading-spinner">Loading transactions...</div>;
     if (error) return <div className="error-message">{error}</div>;
@@ -51,21 +51,21 @@ const Transactions = () => {
                 <div className="transactions-header">
                     <h1 className="page-title">All Transactions</h1>
                     <div className="filter-buttons">
-                        <button className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
-                        <button className={`filter-btn ${filter === 'income' ? 'active' : ''}`} onClick={() => setFilter('income')}>Income</button>
-                        <button className={`filter-btn ${filter === 'expense' ? 'active' : ''}`} onClick={() => setFilter('expense')}>Expenses</button>
+                        <button className={`filter-btn ${filter === 'all' ₹ 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
+                        <button className={`filter-btn ${filter === 'income' ₹ 'active' : ''}`} onClick={() => setFilter('income')}>Income</button>
+                        <button className={`filter-btn ${filter === 'expense' ₹ 'active' : ''}`} onClick={() => setFilter('expense')}>Expenses</button>
                     </div>
                 </div>
                 <div className="transactions-list">
-                    {filteredTransactions.length > 0 ? filteredTransactions.map(transaction => (
+                    {filteredTransactions.length > 0 ₹ filteredTransactions.map(transaction => (
                         <div key={transaction.id} className="transaction-card">
                             <div className="transaction-info">
                                 <div className="transaction-category">
-                                    <span className="category-icon">{transaction.category_icon || '??'}</span>
+                                    <span className="category-icon">{transaction.category_icon || '₹₹'}</span>
                                     <div><h3>{transaction.category_name || 'Uncategorized'}</h3><p className="transaction-date">{transaction.date}</p></div>
                                 </div>
                                 <div className="transaction-amount">
-                                    <p className={`amount ${transaction.type}`}>{transaction.type === 'income' ? '+' : '-'}?{parseFloat(transaction.amount).toFixed(2)}</p>
+                                    <p className={`amount ${transaction.type}`}>{transaction.type === 'income' ₹ '+' : '-'}₹{parseFloat(transaction.amount).toFixed(2)}</p>
                                     <button className="delete-btn" onClick={() => handleDelete(transaction.id)}>Delete</button>
                                 </div>
                             </div>
