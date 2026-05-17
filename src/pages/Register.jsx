@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { api } from '../services/axiosApi';
 import './Register.css';
 
 const Register = () => {
@@ -26,7 +27,6 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Validation
         if (!formData.username || !formData.email || !formData.password) {
             setError('All fields are required');
             return;
@@ -51,77 +51,25 @@ const Register = () => {
         setError('');
         
         try {
-            // Register the user
-            const registerResponse = await fetch('http://localhost:8000/api/register/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    email: formData.email,
-                    password: formData.password
-                })
+            // Register using API service
+            await api.register({
+                username: formData.username,
+                email: formData.email,
+                password: formData.password
             });
             
-            const registerData = await registerResponse.json();
+            // Auto login after successful registration
+            const result = await login(formData.username, formData.password);
             
-            if (registerResponse.ok) {
-                console.log('Registration successful, now logging in...');
-                
-                // Login after successful registration
-                const loginResponse = await fetch('http://localhost:8000/api/token/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username: formData.username,
-                        password: formData.password
-                    })
-                });
-                
-                const loginData = await loginResponse.json();
-                
-                if (loginResponse.ok && loginData.access) {
-                    // Save tokens to localStorage
-                    localStorage.setItem('access_token', loginData.access);
-                    localStorage.setItem('refresh_token', loginData.refresh);
-                    localStorage.setItem('user', JSON.stringify({ 
-                        username: formData.username, 
-                        isAuthenticated: true 
-                    }));
-                    
-                    console.log('Auto-login successful, navigating to dashboard...');
-                    
-                    // Small delay to ensure localStorage is written
-                    setTimeout(() => {
-                        navigate('/dashboard');
-                        window.location.reload(); // Force reload to update auth state
-                    }, 100);
-                } else {
-                    setError('Account created but auto-login failed. Please login manually.');
-                    setTimeout(() => {
-                        navigate('/login');
-                    }, 1000);
-                }
+            if (result.success) {
+                navigate('/dashboard');
             } else {
-                // Handle registration errors
-                let errorMessage = 'Registration failed. ';
-                if (registerData.username) {
-                    errorMessage += `Username: ${registerData.username.join(', ')}. `;
-                }
-                if (registerData.email) {
-                    errorMessage += `Email: ${registerData.email.join(', ')}. `;
-                }
-                if (registerData.password) {
-                    errorMessage += `Password: ${registerData.password.join(', ')}. `;
-                }
-                setError(errorMessage);
+                setError('Account created but auto-login failed. Please login manually.');
+                navigate('/login');
             }
         } catch (error) {
             console.error('Registration error:', error);
-            setError('Network error. Please make sure the backend server is running.');
+            setError(error.response?.data?.detail || 'Registration failed. Please try again.');
         } finally {
             setLoading(false);
         }

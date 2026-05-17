@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { api } from '../services/axiosApi';
 import './AddExpense.css';
 
 const AddExpense = () => {
@@ -18,10 +19,8 @@ const AddExpense = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if user is logged in
         const storedToken = localStorage.getItem('access_token');
         if (!storedToken && !token) {
-            console.log('No token found, redirecting to login');
             navigate('/login');
             return;
         }
@@ -31,14 +30,8 @@ const AddExpense = () => {
     const fetchCategories = async () => {
         try {
             setFetchingCategories(true);
-            console.log('Fetching categories...');
-            
-            const response = await fetch('http://localhost:8000/api/categories/');
-            const data = await response.json();
-            
-            console.log('Categories received:', data.length);
+            const data = await api.getCategories();
             setCategories(data);
-            
             if (data.length > 0) {
                 const defaultCategory = data.find(cat => cat.type === 'expense');
                 if (defaultCategory) {
@@ -54,27 +47,18 @@ const AddExpense = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleTypeChange = (type) => {
-        setFormData(prev => ({ 
-            ...prev, 
-            type: type,
-            category: ''
-        }));
+        setFormData(prev => ({ ...prev, type: type, category: '' }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        // Get the latest token from localStorage
         const accessToken = localStorage.getItem('access_token');
-        
         if (!accessToken) {
             alert('You are not logged in. Please login again.');
             navigate('/login');
@@ -91,41 +75,19 @@ const AddExpense = () => {
                 date: formData.date
             };
             
-            console.log('Submitting transaction:', transactionData);
-            console.log('Using token:', accessToken.substring(0, 20) + '...');
-            
-            const response = await fetch('http://localhost:8000/api/transactions/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                body: JSON.stringify(transactionData)
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Transaction added:', data);
-                alert('Transaction added successfully!');
-                navigate('/transactions');
-            } else {
-                const error = await response.json();
-                console.error('Server error:', error);
-                
-                if (error.code === 'token_not_valid' || response.status === 401) {
-                    alert('Session expired. Please login again.');
-                    // Clear invalid token
-                    localStorage.removeItem('access_token');
-                    localStorage.removeItem('refresh_token');
-                    localStorage.removeItem('user');
-                    navigate('/login');
-                } else {
-                    alert('Failed to add transaction: ' + (error.detail || JSON.stringify(error)));
-                }
-            }
+            await api.addTransaction(transactionData);
+            alert('Transaction added successfully!');
+            navigate('/transactions');
         } catch (error) {
             console.error('Error adding transaction:', error);
-            alert('Failed to add transaction. Please try again.');
+            if (error.response?.status === 401) {
+                alert('Session expired. Please login again.');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                navigate('/login');
+            } else {
+                alert('Failed to add transaction. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
@@ -152,104 +114,47 @@ const AddExpense = () => {
                 <div className="add-expense-container">
                     <h1 className="form-title">Add New Transaction</h1>
                     
-                    {!user && (
-                        <div className="error-message">You are not logged in. Please <a href="/login">login</a> first.</div>
-                    )}
-                    
                     <form onSubmit={handleSubmit} className="expense-form">
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Transaction Type</label>
                                 <div className="type-buttons">
-                                    <button
-                                        type="button"
-                                        className={`type-btn ${formData.type === 'expense' ? 'active expense' : ''}`}
-                                        onClick={() => handleTypeChange('expense')}
-                                    >
-                                        💸 Expense
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={`type-btn ${formData.type === 'income' ? 'active income' : ''}`}
-                                        onClick={() => handleTypeChange('income')}
-                                    >
-                                        💰 Income
-                                    </button>
+                                    <button type="button" className={`type-btn ${formData.type === 'expense' ? 'active expense' : ''}`} onClick={() => handleTypeChange('expense')}>?? Expense</button>
+                                    <button type="button" className={`type-btn ${formData.type === 'income' ? 'active income' : ''}`} onClick={() => handleTypeChange('income')}>?? Income</button>
                                 </div>
                             </div>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group">
-                                <label htmlFor="amount">Amount (₹)</label>
-                                <input
-                                    type="number"
-                                    id="amount"
-                                    name="amount"
-                                    value={formData.amount}
-                                    onChange={handleChange}
-                                    required
-                                    min="0.01"
-                                    step="0.01"
-                                    placeholder="0.00"
-                                />
+                                <label htmlFor="amount">Amount (?)</label>
+                                <input type="number" id="amount" name="amount" value={formData.amount} onChange={handleChange} required min="0.01" step="0.01" placeholder="0.00" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="category">Category</label>
-                                <select
-                                    id="category"
-                                    name="category"
-                                    value={formData.category}
-                                    onChange={handleChange}
-                                    required
-                                >
+                                <select id="category" name="category" value={formData.category} onChange={handleChange} required>
                                     <option value="">Select a category</option>
-                                    {filteredCategories.map(cat => (
-                                        <option key={cat.id} value={cat.id}>
-                                            {cat.icon} {cat.name}
-                                        </option>
-                                    ))}
+                                    {filteredCategories.map(cat => (<option key={cat.id} value={cat.id}>{cat.icon} {cat.name}</option>))}
                                 </select>
-                                {filteredCategories.length === 0 && (
-                                    <p className="error-text">No categories found for {formData.type} type</p>
-                                )}
                             </div>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group">
                                 <label htmlFor="date">Date</label>
-                                <input
-                                    type="date"
-                                    id="date"
-                                    name="date"
-                                    value={formData.date}
-                                    onChange={handleChange}
-                                    required
-                                />
+                                <input type="date" id="date" name="date" value={formData.date} onChange={handleChange} required />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="description">Description (Optional)</label>
-                                <input
-                                    type="text"
-                                    id="description"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleChange}
-                                    placeholder="Add a note..."
-                                />
+                                <input type="text" id="description" name="description" value={formData.description} onChange={handleChange} placeholder="Add a note..." />
                             </div>
                         </div>
 
                         <div className="form-actions">
-                            <button type="button" className="btn-cancel" onClick={() => navigate('/dashboard')}>
-                                Cancel
-                            </button>
-                            <button type="submit" className="btn-submit" disabled={loading}>
-                                {loading ? 'Adding...' : 'Add Transaction'}
-                            </button>
+                            <button type="button" className="btn-cancel" onClick={() => navigate('/dashboard')}>Cancel</button>
+                            <button type="submit" className="btn-submit" disabled={loading}>{loading ? 'Adding...' : 'Add Transaction'}</button>
                         </div>
                     </form>
                 </div>
